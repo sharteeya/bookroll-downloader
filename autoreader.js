@@ -1,21 +1,22 @@
-let str = "";
+const waitAtLeast = 30; // Wait n seconds before next page.
+// Friendly remind: Wait longer can prevent record missing bug in Bookroll
+
+const rArrow = document.getElementsByClassName("arrow")[1];
 let numArr = [];
-let rArrow = document.getElementsByClassName("arrow")[1];
-let randomTime;
-const waitAtLeast = 30; // seconds
 
 async function autoRead(){
-	str = document.getElementById("pageNumberText").innerHTML;
-	numArr = str.split(": ")[1].split(" / ");
-	randomTime = Math.round(Math.random() * 100000 % 30000 + waitAtLeast * 1000);
-	console.log(`Waiting for ${randomTime} ms`);
-	await new Promise(resolve => setTimeout(resolve, randomTime));
-	if (numArr[0] != numArr[1]) {
+    const str = document.getElementById("pageNumberText").innerText;
+    let randomTime = Math.round(Math.random() * 100000 % 30000 + waitAtLeast * 1000);
+    numArr = str.split(": ")[1].split(" / ");
+
+    console.log(`%cRead this page for ${randomTime} ms`, 'background: #3d3d3d; color: white; font-size: 24px');
+    await new Promise(resolve => setTimeout(resolve, randomTime));
+    if (numArr[0] != numArr[1]) {
         autoRead();
     } else {
-        console.log("Auto read finish");
+        console.log("%cAuto reading finished. Goodbye!", 'background: #3d3d3d; color: cyan; font-size: 24px');
     }
-	rArrow.click();
+    rArrow.click();
 }
 
 autoRead();
